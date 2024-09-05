@@ -14,14 +14,12 @@ CORS(api)
 
 @api.route("/user", methods=["POST"])
 def create_user():
-    # Get request data
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
     if not email or not password:
         raise APIException("Email and password are required fields", 400)
     
-    # Search email to comprobate if already exist
     user_exist = User.query.filter_by(email=email).first()
     
     print(user_exist)
@@ -39,13 +37,13 @@ def create_user():
     
     return jsonify({ "message": "User created successfully" }), 201
 
+    
+
 @api.route('/token', methods=['POST'])
 def create_token():
-    # Get request username and password
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     
-    # Search user in DB
     user = User.query.filter_by(email=email, password=password).first()
     
     if user is None:
@@ -62,3 +60,4 @@ def protected():
     user = User.query.get(current_user_id)
     
     return jsonify({ "id": user.id, "email": user.email }), 200
+
